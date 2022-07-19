@@ -24,6 +24,9 @@ namespace la_mia_pizzeria_static.Models
 
         public List<Ingrediente>? ListaIngredienti { get; set; }
 
+        public int? CategoriaId { get; set; }
+        public Categoria? Categoria { get; set; }
+
         public Pizza()
         {
 
