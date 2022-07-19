@@ -26,6 +26,8 @@
                 <div class="col-6">
                     <img class="w-50 rounded-circle" src="@pizza.Img" />
                 </div>
+
+                <a class="btn btn-warning" href="@Url.Action("Update", "Pizza", new {id = pizza.ID})">Modifica pizza </a>
             </div>
         } 
     }
