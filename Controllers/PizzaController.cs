@@ -1,6 +1,7 @@
 ﻿using la_mia_pizzeria_static.Database;
 using la_mia_pizzeria_static.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace la_mia_pizzeria_static.Controllers
@@ -25,11 +26,10 @@ namespace la_mia_pizzeria_static.Controllers
         {
             using(PizzaContext context = new PizzaContext())
             {
-                List<Pizza> listaPizze = context.Pizze.ToList();
+                IQueryable<Pizza> listaPizze = context.Pizze.Include(p => p.Categoria);
 
-                return View("Menu", listaPizze);
-            }
-           
+                return View("Menu", listaPizze.ToList());
+            } 
         }
 
 
@@ -38,7 +38,7 @@ namespace la_mia_pizzeria_static.Controllers
         {
             using (PizzaContext context = new PizzaContext())
             {
-                Pizza current = context.Pizze.Where(pizza => pizza.ID == id).FirstOrDefault();
+                Pizza current = context.Pizze.Where(pizza => pizza.ID == id).Include(p => p.Categoria).FirstOrDefault();
 
                 if(current == null)
                 {
@@ -60,20 +60,34 @@ namespace la_mia_pizzeria_static.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+
+            using(PizzaContext context = new PizzaContext())
+            {
+                List<Categoria> categorias = context.Categorie.ToList();
+
+                PizzaCategories pizzaCategories = new PizzaCategories();
+
+                pizzaCategories.Categorias = categorias;
+                pizzaCategories.Pizza = new Pizza();
+
+                return View(pizzaCategories);
+            }
+            
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Pizza pizza)
+        public IActionResult Create(PizzaCategories data)
         {
-            if (!ModelState.IsValid)
-            {
-                return View("Create", pizza);
-            }
             using (PizzaContext context = new PizzaContext())
             {
-                context.Pizze.Add(pizza);
+                if (!ModelState.IsValid)
+                {
+                    data.Categorias = context.Categorie.ToList();
+                    return View("Create", data);
+                }
+           
+                context.Pizze.Add(data.Pizza);
                 context.SaveChanges();
             }
 
@@ -120,33 +134,43 @@ namespace la_mia_pizzeria_static.Controllers
                 }
                 else
                 {
-                    return View(pizza);
+                    PizzaCategories model = new PizzaCategories();
+
+                    model.Categorias = context.Categorie.ToList();
+                    model.Pizza = pizza;
+                    
+                    return View(model);
                 }
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update(int id, Pizza pizza)
+        public IActionResult Update(int id, PizzaCategories data)
         {
-            if (!ModelState.IsValid)
-            {
-                return View("Update", pizza);
-            }
             using (PizzaContext context = new PizzaContext())
             {
+                    if (!ModelState.IsValid)
+                {
+                    data.Categorias = context.Categorie.ToList();
+                    return View("Update", data);
+                }
+           
              
                 Pizza editPizza = context.Pizze.Where(pizza => pizza.ID == id).FirstOrDefault();
+
                 if(editPizza == null)
                 {
                     return NotFound();
                 }
                 else
                 {
-                    editPizza.Description = pizza.Description;
-                    editPizza.Name = pizza.Name;
-                    editPizza.Price = pizza.Price;
-                    editPizza.Img = pizza.Img;
+                    editPizza.Description = data.Pizza.Description;
+                    editPizza.Name = data.Pizza.Name;
+                    editPizza.Price = data.Pizza.Price;
+                    editPizza.Img = data.Pizza.Img;
+
+                    editPizza.CategoriaId = data.Pizza.CategoriaId;
                     context.SaveChanges();
                 }
                 return RedirectToAction("Menu");
