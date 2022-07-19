@@ -106,6 +106,53 @@ namespace la_mia_pizzeria_static.Controllers
         //    return RedirectToAction("Menu");
         //}
 
+
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            using (PizzaContext context = new PizzaContext())
+            {
+                Pizza pizza = context.Pizze.Where(pizza => pizza.ID == id).FirstOrDefault();
+
+                if (pizza == null)
+                {
+                    return NotFound("La pizza non esiste");
+                }
+                else
+                {
+                    return View(pizza);
+                }
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Update(int id, Pizza pizza)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Update", pizza);
+            }
+            using (PizzaContext context = new PizzaContext())
+            {
+             
+                Pizza editPizza = context.Pizze.Where(pizza => pizza.ID == id).FirstOrDefault();
+                if(editPizza == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    editPizza.Description = pizza.Description;
+                    editPizza.Name = pizza.Name;
+                    editPizza.Price = pizza.Price;
+                    editPizza.Img = pizza.Img;
+                    context.SaveChanges();
+                }
+                return RedirectToAction("Menu");
+            }
+        }
+
         public IActionResult Privacy()
         {
             return View();
