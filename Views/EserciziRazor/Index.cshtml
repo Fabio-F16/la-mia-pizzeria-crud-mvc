@@ -1,0 +1,105 @@
+﻿@{
+    Layout = null;
+}
+
+
+@*1. Dichiarare una variabile valorizzandola con il nostro nome.
+Dichiarare un'altra variabile valorizzandola con il nostro cognome.
+Stampare il nostro nome e cognome all'interno di un tag h2.*@
+
+@{
+    string nome = "Fabio";
+    string cognome = "Ronaldo";
+}
+
+
+    <h5>Es 1</h5>
+    <h2>@nome</h2>
+    <h2>@cognome</h2>
+    <hr />
+
+
+@*2. Creare una funzione che stampa la somma dei numeri che vanno da 1 a n (con n passato come parametro - n incluso)
+Stampare dentro uno span il risultato.*@
+
+
+@{
+     int sum(int n)
+    {
+        int sum = 0;
+        for (int i = 1; i <= n; i++)
+        {
+            sum += i;
+        }
+        return sum;
+    }
+}
+
+    <h5>Es 2</h5>
+    <p>@sum(5)</p>
+    <hr />
+
+
+@*3. Contare quante volte la lettera a è presente nalla frase "nel mezzo del cammin di nostra vita" e stampare questo valore in pagina*@
+@{
+    //string text = "nel mezzo del cammin di nostra vita";
+    //var elementOnArray = text.Count();
+    //string[] array = text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+    //elementOnArray = array.Count();
+
+    //<p>@elementOnArray</p>
+    string text = "nel mezzo del cammin di nostra vita";
+    int result = text.Split('a').Length - 1;
+}
+    <h5>Es 3</h5>
+    <p>@result</p>
+    <hr />
+
+
+@*
+4. Creare una List<int> di 20 numeri interi (generati random da 1 a 90, 1 e 90 inclusi) e mostrare in pagina solo i numeri compresi tra 20 e 70*@
+
+@{
+    List<int> numbers = new List<int>();
+   
+    for(int i = 0; i<20; i++)
+    {
+          int num = new Random().Next(1, 91);
+          numbers.Add(num);
+            
+    }
+    
+    <h5>Es 4</h5>
+    foreach(int numero in numbers)
+    {
+         if(numero>20 && numero<70)
+        {
+            <p>@numero</p>
+        } 
+    }
+
+}
+
+
+@*5. Stampare in pagina la data e l'ora attuale (usando la classe DateTime) con il formato anno-mese-giorno ore:minuti:secondi*@
+
+@{
+    DateTime date = DateTime.Now;
+}
+ <h5>Es 5</h5>
+<p>@date.ToString("yyyy-MM-dd  HH:mm:ss")</p>
+<hr />
+
+
+@*6. Partendo dalla data di oggi (usando la classe DateTime) stampare in pagina
+a. la data di 7 giorni fa
+b. che giorno della settimana è oggi (il risultato dovrà essere il nome del giorno (Lunedì, Martedì, ...)
+c. che giorno della settimana sarà nello stesso giorno e mese di oggi ma tra un anno (il risultato dovrà essere il nome del giorno (Lunedì, Martedì, ...)*@
+
+
+<h5>Es 6</h5>
+<p>@date.AddDays(-7).ToString("yyyy-MM-dd")</p>
+
+<p>@date.ToString("dddd")</p>
+<p>@date.AddYears(1).ToString("dddd")</p>
+<hr />

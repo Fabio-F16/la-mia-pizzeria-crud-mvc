@@ -1,0 +1,19 @@
+﻿@model Pizza
+<main>
+
+    <div class="card d-flex flex-row justify-content-between p-3 mb-4 bg-warning">
+        <div class="col-6 ">
+            <h1>@Model.Name</h1>
+            <p>@Model.Description</p>
+            <p>Prezzo: @Model.Price&euro;</p>
+        </div>
+                   
+        <div class="col-6">
+             <img class="w-50 rounded-circle" src="@Model.Img" />
+        </div>
+    </div>
+
+</main>
+
+              
+
