@@ -22,6 +22,7 @@ namespace la_mia_pizzeria_static.Models
         [Range(1, 15, ErrorMessage ="Non può essere zero")]
         public double Price { get; set; }
 
+        public List<Ingrediente>? ListaIngredienti { get; set; }
 
         public Pizza()
         {
