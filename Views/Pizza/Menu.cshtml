@@ -27,7 +27,19 @@
                     <img class="w-50 rounded-circle" src="@pizza.Img" />
                 </div>
 
-                <a class="btn btn-warning" href="@Url.Action("Update", "Pizza", new {id = pizza.ID})">Modifica pizza </a>
+
+                <div>
+                    <a class="btn btn-warning" href="@Url.Action("Update", "Pizza", new {id = pizza.ID})">Modifica pizza </a>
+
+                    <form asp-controller="Pizza" asp-action="Delete" asp-route-id="@pizza.ID" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger">Elimina</button>
+
+                    </form>
+
+                </div>
+                
+             
             </div>
         } 
     }

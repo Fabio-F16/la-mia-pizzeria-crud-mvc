@@ -153,6 +153,29 @@ namespace la_mia_pizzeria_static.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+           
+            using (PizzaContext context = new PizzaContext())
+            {
+
+                Pizza pizza = context.Pizze.Where(pizza => pizza.ID == id).FirstOrDefault();
+               
+                if(pizza == null)
+                {
+                    return NotFound();
+                }
+
+                context.Pizze.Remove(pizza);
+                context.SaveChanges();
+
+                return RedirectToAction("Menu");
+            }
+        }
+
+
         public IActionResult Privacy()
         {
             return View();
