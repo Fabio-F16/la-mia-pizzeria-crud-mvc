@@ -21,6 +21,7 @@
                     <h3> <a href="@Url.Action("DettaglioPizza", "Pizza", new {id = pizza.ID})">@pizza.Name </a> </h3>
                     <p>@pizza.Description</p>
                     <p>Prezzo: @pizza.Price&euro;</p>
+                    <p>Tipologia: @pizza.Categoria.Name</p>
                 </div>
                    
                 <div class="col-6">

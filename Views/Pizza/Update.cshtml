@@ -1,4 +1,4 @@
-﻿@model Pizza
+﻿@model PizzaCategories
 <main class="container">
 
     <div class="row">
@@ -9,30 +9,51 @@
                 <h2>Modifica la pizza</h2>
             </div>
 
-            <form asp-controller="Pizza" asp-action="Update" asp-route-id="@Model.ID" method="post">
+            <form asp-controller="Pizza" asp-action="Update" asp-route-id="@Model.Pizza.ID" method="post">
                 @Html.AntiForgeryToken()
                 <div>
                     <h4>Nome Pizza:</h4>
-                    <input asp-for="Name" class="d-block w-100" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
+                    <input asp-for="Pizza.Name" class="d-block w-100" />
+                    <span asp-validation-for="Pizza.Name" class="text-danger"></span>
                 </div>
 
                 <div>
                     <h4>Immagine:</h4>
-                    <input asp-for="Img" class="d-block w-100" />
-                    <span asp-validation-for="Img" class="text-danger"></span>
+                    <input asp-for="Pizza.Img" class="d-block w-100" />
+                    <span asp-validation-for="Pizza.Img" class="text-danger"></span>
                 </div>
 
                 <div>
                     <h4>Ingredienti:</h4>
-                    <input asp-for="Description" class="d-block w-100" />
-                    <span asp-validation-for="Description" class="text-danger"></span>
+                    <input asp-for="Pizza.Description" class="d-block w-100" />
+                    <span asp-validation-for="Pizza.Description" class="text-danger"></span>
                 </div>
 
                 <div>
                     <h4>Prezzo:</h4>
-                    <input asp-for="Price" class="d-block w-100" />
-                    <span asp-validation-for="Price" class="text-danger"></span>
+                    <input asp-for="Pizza.Price" class="d-block w-100" />
+                    <span asp-validation-for="Pizza.Price" class="text-danger"></span>
+                </div>
+
+                 <div>
+                    <h4>Categoria:</h4>
+
+                    <select asp-for="Pizza.CategoriaId" class="d-block w-100" >
+                        <option value=""></option>
+                        @foreach(Categoria categoria in Model.Categorias)
+                        {
+                            @if(Model.Pizza.CategoriaId  == categoria.Id)
+                            {
+                                <option value="@categoria.Id" selected>@categoria.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@categoria.Id">@categoria.Name</option>
+                            }
+                        }
+
+                    </select>
+                    <span asp-validation-for="Pizza.Price" class="text-danger"></span>
                 </div>
 
                 <div>
