@@ -155,20 +155,39 @@ namespace la_mia_pizzeria_static.Controllers
         {
             using (PizzaContext context = new PizzaContext())
             {
-                Pizza pizza = context.Pizze.Where(pizza => pizza.ID == id).FirstOrDefault();
+                Pizza pizzaToEdit = context.Pizze.Where(pizza => pizza.ID == id).Include(p => p.Categoria).Include(p => p.ListaIngredienti).FirstOrDefault();
 
-                if (pizza == null)
+                if (pizzaToEdit == null)
                 {
                     return NotFound("La pizza non esiste");
                 }
                 else
                 {
-                    PizzaCategories model = new PizzaCategories();
-
-                    model.Categorias = context.Categorie.ToList();
-                    model.Pizza = pizza;
                     
-                    return View(model);
+                    PizzaCategories pizzaModel = new PizzaCategories();
+
+                    List<SelectListItem> listIngredients = new List<SelectListItem>();
+                    List<Ingrediente> ingredients = context.ListaIngredienti.ToList();
+
+                    foreach (Ingrediente ingrediente in ingredients)
+                    {
+                        listIngredients.Add(new SelectListItem() { Text = ingrediente.Name, Value = ingrediente.Id.ToString() });
+                    }
+
+                    pizzaModel.Ingredients = listIngredients;
+
+                    List<Categoria> categorias = context.Categorie.ToList();
+                    pizzaModel.Categorias = categorias;
+                    pizzaModel.Pizza = pizzaToEdit;
+                    pizzaModel.SelectedIngredients = new List<string>();
+
+                    foreach(Ingrediente ingr in pizzaToEdit.ListaIngredienti)
+                    {
+                        pizzaModel.SelectedIngredients.Add(ingr.Id.ToString());
+                    }
+
+
+                    return View(pizzaModel);
                 }
             }
         }
@@ -182,11 +201,22 @@ namespace la_mia_pizzeria_static.Controllers
                 if (!ModelState.IsValid)
                 {
                     data.Categorias = context.Categorie.ToList();
+
+                    List<SelectListItem> listIngredients = new List<SelectListItem>();
+                    List<Ingrediente> ingredients = context.ListaIngredienti.ToList();
+
+                    foreach (Ingrediente ingrediente in ingredients)
+                    {
+                        listIngredients.Add(new SelectListItem() { Text = ingrediente.Name, Value = ingrediente.Id.ToString() });
+                    }
+
+                    data.Ingredients = listIngredients;
+
                     return View("Update", data);
                 }
 
 
-                Pizza editPizza = context.Pizze.Where(pizza => pizza.ID == id).FirstOrDefault();
+                Pizza editPizza = context.Pizze.Where(pizza => pizza.ID == id).Include(p => p.Categoria).Include(p => p.ListaIngredienti).FirstOrDefault();
 
                 if (editPizza == null)
                 {
@@ -194,18 +224,33 @@ namespace la_mia_pizzeria_static.Controllers
                 }
                 else
                 {
+                  
                     editPizza.Description = data.Pizza.Description;
                     editPizza.Name = data.Pizza.Name;
                     editPizza.Price = data.Pizza.Price;
                     editPizza.Img = data.Pizza.Img;
-
                     editPizza.CategoriaId = data.Pizza.CategoriaId;
+
+                    editPizza.ListaIngredienti.Clear();
+
+
+                    foreach (string ingredienteString in data.SelectedIngredients)
+                    {
+                        int ingredienteId = int.Parse(ingredienteString);
+
+                        Ingrediente ingrediente = context.ListaIngredienti.Where(p => p.Id == ingredienteId).FirstOrDefault();
+                        editPizza.ListaIngredienti.Add(ingrediente);
+                    }
+
+
                     context.SaveChanges();
                 }
                 return RedirectToAction("Menu");
             }
         }
 
+
+        // delete --------------------------------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)

@@ -53,7 +53,13 @@
                         }
 
                     </select>
-                    <span asp-validation-for="Pizza.Price" class="text-danger"></span>
+                    
+                </div>
+
+                <div>
+                    <h4>Ingredienti:</h4>
+                    <select asp-for="SelectedIngredients" multiple="multiple" asp-items="@Model.Ingredients">
+                    </select>
                 </div>
 
                 <div>
