@@ -24,7 +24,7 @@
                 </div>
 
                 <div>
-                    <h4>Ingredienti:</h4>
+                    <h4>Descrizione:</h4>
                     <input asp-for="Pizza.Description" class="d-block w-100" />
                     <span asp-validation-for="Pizza.Description" class="text-danger"></span>
                 </div>
@@ -51,6 +51,12 @@
                             <option value="@categoria.Id">@categoria.Name</option>
                         }
                     }
+                    </select>
+                </div>
+
+                 <div>
+                    <h4>Ingredienti:</h4>
+                    <select asp-for="SelectedIngredients" multiple="multiple" asp-items="@Model.Ingredients">
                     </select>
                 </div>
 

@@ -7,10 +7,19 @@
             <p>@Model.Description</p>
             <p>Prezzo: @Model.Price&euro;</p>
             <p>Categoria: @Model.Categoria.Name</p>
+            <p>Ingredienti:</p>
+            <ul>
+                 @foreach(Ingrediente ingrediente in @Model.ListaIngredienti)
+                 {
+                <li>@ingrediente.Name</li>
+                 }
+
+            </ul>
+           
         </div>
                    
         <div class="col-6">
-             <img class="w-50 rounded-circle" src="@Model.Img" />
+             <img class="w-50 rounded-circle" src="https://static6.depositphotos.com/1000814/612/v/600/depositphotos_6125994-stock-illustration-pizza-salami.jpg" />
         </div>
     </div>
 
