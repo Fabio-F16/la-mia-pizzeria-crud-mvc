@@ -69,8 +69,6 @@ namespace la_mia_pizzeria_static.Controllers
 
                 PizzaCategories pizzaModel = new PizzaCategories();
 
-
-
                 List<SelectListItem> listIngredients = new List<SelectListItem>();
 
                 List<Ingrediente> ingredients = context.ListaIngredienti.ToList();
@@ -124,6 +122,7 @@ namespace la_mia_pizzeria_static.Controllers
                 newPizza.Description = pizzaModel.Pizza.Description;
                 newPizza.Img = pizzaModel.Pizza.Img;
                 newPizza.CategoriaId = pizzaModel.Pizza.CategoriaId;
+                newPizza.Price = pizzaModel.Pizza.Price;
 
                 newPizza.ListaIngredienti = new List<Ingrediente>();
 
