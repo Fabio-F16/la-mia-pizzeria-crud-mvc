@@ -17,9 +17,7 @@ namespace la_mia_pizzeria_static.Models
         }
         public Ingrediente(string name)
         {
-            
             Name = name;
-           
         }
     }
 }
