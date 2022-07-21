@@ -11,11 +11,14 @@
             <ul>
                  @foreach(Ingrediente ingrediente in @Model.ListaIngredienti)
                  {
-                <li>@ingrediente.Name</li>
+                    <li>@ingrediente.Name</li>
                  }
-
             </ul>
-           
+            <a class="btn btn-secondary " href="@Url.Action("Update", "Pizza", new {id = Model.ID})">Modifica pizza </a>
+            <form asp-controller="Pizza" asp-action="Delete" asp-route-id="@Model.ID" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger">Elimina</button>
+            </form>
         </div>
                    
         <div class="col-6">
